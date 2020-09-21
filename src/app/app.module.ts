@@ -27,6 +27,6 @@ import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-ed
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent] //Loads AppComponent at startup
 })
 export class AppModule { }

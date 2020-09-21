@@ -9,14 +9,16 @@ exports.__esModule = true;
 exports.AppModule = void 0;
 var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 var app_component_1 = require("./app.component");
 var header_component_1 = require("./header/header.component");
 var recipes_component_1 = require("./recipes/recipes.component");
 var recipe_list_component_1 = require("./recipes/recipe-list/recipe-list.component");
 var recipe_detail_component_1 = require("./recipes/recipe-detail/recipe-detail.component");
+var recipe_item_component_1 = require("./recipes/recipe-list/recipe-item/recipe-item.component");
 var shopping_list_component_1 = require("./shopping-list/shopping-list.component");
 var shopping_edit_component_1 = require("./shopping-list/shopping-edit/shopping-edit.component");
-var recipe_item_component_1 = require("./recipes/recipe-list/recipe-item/recipe-item.component");
+;
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -33,10 +35,11 @@ var AppModule = /** @class */ (function () {
                 recipe_item_component_1.RecipeItemComponent
             ],
             imports: [
-                platform_browser_1.BrowserModule
+                platform_browser_1.BrowserModule,
+                forms_1.FormsModule
             ],
             providers: [],
-            bootstrap: [app_component_1.AppComponent]
+            bootstrap: [app_component_1.AppComponent] //Loads AppComponent at startup
         })
     ], AppModule);
     return AppModule;

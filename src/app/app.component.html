@@ -1,9 +1,12 @@
-<app-header></app-header>
+<!-- Result of the click event in the header forwarded to the onNavigate function in app.component -->
+<app-header (featureSelected)="onNavigate($event)"></app-header>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-recipes></app-recipes>
-      <app-shopping-list></app-shopping-list>
+      <!-- Show recipes component if loadedFeature variable is recipe (comes from onNavigate) -->
+      <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>
+      <!-- Show shopping-list component if loadedFeature variable is shopping-list (comes from onNavigate) -->
+      <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list>
     </div>
   </div>
 </div>

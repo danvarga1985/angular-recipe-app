@@ -5,21 +5,15 @@
 </div>
 <hr>
 <div class="row">
-  <div class="col-md-12">
-    <a href="#" 
-    class="list-group-item clearfix" 
-    *ngFor="let recipeItem of recipes">
-        <div class="pull-left">
-            <h4 class="list-group-item-heading">{{ recipeItem.name }}</h4>
-            <p class="list-group-item-text">{{ recipeItem.description }}</p>
-        </div>
-        <span class="pull-right">
-            <img [src]="recipeItem.imagePath"
-            alt="{{ recipeItem.name }}" 
-            class="img-responsive" 
-            style="max-height: 50px;">
-        </span>
-    </a>
-    <app-recipe-item></app-recipe-item>
+  <div class="col-xs-12">
+    <!--  A. Shows all recipe-items in the recipes[], 
+          B. binds the found recipe-item to the recipe property of recipe-item, 
+          C. calls onRecipeSelected method in recipe-item with the found recipe as parameter
+     -->
+    <app-recipe-item
+      *ngFor="let recipeEl of recipes"
+      [recipe]="recipeEl"
+      (recipeSelected)="onRecipeSelected(recipeEl)">
+    </app-recipe-item>
   </div>
 </div>

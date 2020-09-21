@@ -11,12 +11,21 @@ var core_1 = require("@angular/core");
 var recipe_model_1 = require("../recipe.model");
 var RecipeListComponent = /** @class */ (function () {
     function RecipeListComponent() {
+        this.recipeWasSelected = new core_1.EventEmitter();
         this.recipes = [
-            new recipe_model_1.Recipe('A test recipe', 'This is just a test', 'https://www.eatwell101.com/wp-content/uploads/2019/04/chicken-and-asparagus-skillet-recipe-2.jpg')
+            new recipe_model_1.Recipe('A test recipe', 'This is just a test', 'https://static.dribbble.com/users/301004/screenshots/994795/dribble.jpg'),
+            new recipe_model_1.Recipe('Another recipe', 'This is just a test', 'https://static.dribbble.com/users/301004/screenshots/994795/dribble.jpg')
         ];
     }
     RecipeListComponent.prototype.ngOnInit = function () {
     };
+    //Forwards the selected recipe to
+    RecipeListComponent.prototype.onRecipeSelected = function (recipe) {
+        this.recipeWasSelected.emit(recipe);
+    };
+    __decorate([
+        core_1.Output()
+    ], RecipeListComponent.prototype, "recipeWasSelected");
     RecipeListComponent = __decorate([
         core_1.Component({
             selector: 'app-recipe-list',
