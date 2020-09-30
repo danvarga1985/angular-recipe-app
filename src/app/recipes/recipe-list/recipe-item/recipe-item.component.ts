@@ -7,10 +7,10 @@ import { Recipe } from '../../recipe.model';
   styleUrls: ['./recipe-item.component.scss']
 })
 export class RecipeItemComponent implements OnInit {
-  //Binded by recipe-list component
+  // Binded by recipe-list component
   @Input() recipe: Recipe;
 
-  //Comes from recipe-list
+  // Comes from recipe-list
   @Output() recipeSelected = new EventEmitter<void>();
 
   constructor() { }
@@ -18,6 +18,7 @@ export class RecipeItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // tslint:disable-next-line:typedef
   onSelected() {
     this.recipeSelected.emit();
   }
