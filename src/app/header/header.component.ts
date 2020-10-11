@@ -8,8 +8,7 @@ export class HeaderComponent {
     // Forwards the result of the HTML click event
     @Output() featureSelected = new EventEmitter<string>();
 
-  // tslint:disable-next-line:typedef
-    onSelect(feature: string) {
+    onSelect(feature: string): void {
         this.featureSelected.emit(feature);
     }
 
