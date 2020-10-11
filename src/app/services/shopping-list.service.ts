@@ -1,9 +1,41 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
+import {Ingredient} from '../shared/ingredient.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingListService {
 
-  constructor() { }
+  ingredientsChanged = new EventEmitter<Ingredient[]>();
+
+  private ingredients: Ingredient[] = [
+    new Ingredient('Apples', 5),
+    new Ingredient('Tomatoes', 10),
+  ];
+
+  constructor() {
+  }
+
+  getIngredients(): Ingredient[] {
+    return this.ingredients.slice();
+  }
+
+  addIngredient(ingredient: Ingredient): void {
+    this.ingredients.push(ingredient);
+    this.ingredientsChanged.emit(this.ingredients.slice());
+  }
+
+  addIngredientsToShoppingList(newIngredients: Ingredient[]): void {
+    newIngredients.forEach(ni => {
+      if (this.ingredients.includes(ni)) {
+        this.ingredients.find(value => value.name.toLowerCase() === ni.name.toLowerCase()).amount += ni.amount;
+      } else {
+        this.ingredients.push(ni);
+      }
+    });
+
+    // Alternate solution - I don't like it
+    // this.ingredients.push(...newIngredients);
+    // this.ingredientsChanged.emit(this.ingredients.slice());
+  }
 }
