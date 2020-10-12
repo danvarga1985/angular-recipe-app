@@ -26,16 +26,7 @@ export class ShoppingListService {
   }
 
   addIngredientsToShoppingList(newIngredients: Ingredient[]): void {
-    newIngredients.forEach(ni => {
-      if (this.ingredients.includes(ni)) {
-        this.ingredients.find(value => value.name.toLowerCase() === ni.name.toLowerCase()).amount += ni.amount;
-      } else {
-        this.ingredients.push(ni);
-      }
-    });
-
-    // Alternate solution - I don't like it
-    // this.ingredients.push(...newIngredients);
-    // this.ingredientsChanged.emit(this.ingredients.slice());
+    this.ingredients.push(...newIngredients);
+    this.ingredientsChanged.emit(this.ingredients.slice());
   }
 }

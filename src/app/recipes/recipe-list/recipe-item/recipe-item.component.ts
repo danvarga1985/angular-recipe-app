@@ -8,7 +8,7 @@ import {RecipeService} from '../../../services/recipe.service';
   styleUrls: ['./recipe-item.component.scss']
 })
 export class RecipeItemComponent implements OnInit {
-  // Binded by recipe-list component
+  // Bound by recipe-list component
   @Input() recipe: Recipe;
 
   constructor(private recipeService: RecipeService) { }
@@ -16,6 +16,7 @@ export class RecipeItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Call 'recipe.service' to emit the 'recipe' property -> shown in 'recipes.component'
   onSelected(): void {
     this.recipeService.getRecipeSelected().emit(this.recipe);
   }

@@ -1,11 +1,10 @@
 <div class="row">
     <div class="col-md-5">
-        <!-- Sets selectedRecipe with the called recipeWasSelected event in recipe-list -->
         <app-recipe-list></app-recipe-list>
     </div>
     <div class="col-md-7">
-        <!-- Shows recipe-detail with the recipe property binded by selectedRecipe if there is a selected Recipe,
-            otherwise shows infoText template/property??? -->
+        <!-- Show recipe-detail with the recipe property bound by selectedRecipe if there is a selected Recipe,
+            otherwise show infoText template/template-property??? -->
         <app-recipe-detail
             *ngIf="selectedRecipe; else infoText"
             [recipe]="selectedRecipe">

@@ -9,7 +9,7 @@ export class AppComponent {
   loadedFeature = 'recipe';
 
   // Overwrites the loadedFeature variable with the parameter given by the click event in the app-header
-  onNavigate(feature: string) {
+  onNavigate(feature: string): void {
     this.loadedFeature = feature;
   }
 }

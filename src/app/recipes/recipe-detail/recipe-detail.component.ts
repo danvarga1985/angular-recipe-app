@@ -9,7 +9,7 @@ import {RecipeService} from '../../services/recipe.service';
   styleUrls: ['./recipe-detail.component.scss']
 })
 export class RecipeDetailComponent implements OnInit {
-  // Binded by recipes-component
+  // Bound by recipes-component
   @Input() recipe: Recipe;
 
   constructor(private recipeService: RecipeService) { }

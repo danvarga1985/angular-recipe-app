@@ -7,6 +7,7 @@ import {ShoppingListService} from './shopping-list.service';
   providedIn: 'root'
 })
 export class RecipeService {
+  // Subscribed to by 'recipes.component'
   private recipeSelected = new EventEmitter<Recipe>();
 
   private recipes: Recipe[] = [
@@ -35,6 +36,7 @@ export class RecipeService {
     return this.recipes.slice();
   }
 
+  // Comes from 'recipe-item'
   getRecipeSelected(): EventEmitter<Recipe> {
     return this.recipeSelected;
   }
