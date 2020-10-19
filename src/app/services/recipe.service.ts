@@ -36,6 +36,10 @@ export class RecipeService {
     return this.recipes.slice();
   }
 
+  getRecipe(index: number): Recipe {
+    return this.recipes[index];
+  }
+
   // Comes from 'recipe-item'
   getRecipeSelected(): EventEmitter<Recipe> {
     return this.recipeSelected;

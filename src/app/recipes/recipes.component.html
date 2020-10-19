@@ -1,16 +1,8 @@
 <div class="row">
-    <div class="col-md-5">
-        <app-recipe-list></app-recipe-list>
-    </div>
-    <div class="col-md-7">
-        <!-- Show recipe-detail with the recipe property bound by selectedRecipe if there is a selected Recipe,
-            otherwise show infoText template/template-property??? -->
-        <app-recipe-detail
-            *ngIf="selectedRecipe; else infoText"
-            [recipe]="selectedRecipe">
-        </app-recipe-detail>
-        <ng-template #infoText>
-            <p>Please select a Recipe!</p>
-        </ng-template>
-    </div>
+  <div class="col-md-5">
+    <app-recipe-list></app-recipe-list>
+  </div>
+  <div class="col-md-7">
+    <router-outlet></router-outlet>
+  </div>
 </div>
