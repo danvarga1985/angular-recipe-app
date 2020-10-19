@@ -4,10 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <!-- Show recipes component if loadedFeature variable is recipe (comes from onNavigate) -->
-      <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes>
-      <!-- Show shopping-list component if loadedFeature variable is shopping-list (comes from onNavigate) -->
-      <app-shopping-list *ngIf="loadedFeature !== 'recipe'"></app-shopping-list>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
