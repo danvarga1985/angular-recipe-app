@@ -6,10 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  loadedFeature = 'recipe';
-
-  // Overwrites the loadedFeature variable with the parameter given by the click event in the app-header
-  onNavigate(feature: string): void {
-    this.loadedFeature = feature;
-  }
 }

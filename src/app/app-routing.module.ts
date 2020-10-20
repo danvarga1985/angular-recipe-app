@@ -9,13 +9,15 @@ import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
 const appRoutes: Routes = [
   // The empty path ('') is part of '/recipes', so pathMatch has to be full. The default value is 'prefix'.
   {path: '', redirectTo: '/recipes', pathMatch: 'full'},
-  {path: 'recipes', component: RecipesComponent, children: [
+  {
+    path: 'recipes', component: RecipesComponent, children: [
       {path: '', component: RecipeStartComponent},
       // 'new' has to come before the dynamic parameter 'id', otherwise 'new' would also be considered a dynamic parameter
       {path: 'new', component: RecipeEditComponent},
       {path: ':id', component: RecipeDetailComponent},
       {path: ':id/edit', component: RecipeEditComponent},
-    ]},
+    ]
+  },
   {path: 'shopping-list', component: ShoppingListComponent},
 ];
 
