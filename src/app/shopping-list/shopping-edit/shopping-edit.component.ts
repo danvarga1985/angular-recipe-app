@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Ingredient} from '../../shared/ingredient.model';
 import {ShoppingListService} from '../../services/shopping-list.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -19,13 +20,13 @@ export class ShoppingEditComponent implements OnInit {
   }
 
   /*
-   Create a new Ingredient based on the two template variables(#nameInput, #amountInput), then call the service to add them to the
+   Create a new Ingredient based on the two values of the controls of the form in the template, then call the service to add them to the
    'ingredients' array.
   */
-  onAddItem(): void {
-    const ingName = this.nameInputRef.nativeElement.value;
-    const ingAmount = this.amountInputRef.nativeElement.value;
-    const newIngredient = new Ingredient(ingName, ingAmount);
+  onAddItem(form: NgForm): void {
+    const value = form.value;
+    // Accessing the form controls with the control names 'name' & 'amount' set in the template.
+    const newIngredient = new Ingredient(value.name, value.amount);
     this.shoppingListService.addIngredient(newIngredient);
   }
 
