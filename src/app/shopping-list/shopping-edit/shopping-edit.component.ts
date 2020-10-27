@@ -22,8 +22,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   /*
-      A. Subscribe to the 'startedEditing' Subject in the 'shoppingListService', that is ""emitting"" the index of the Ingredient-to-edit.
-      B. Get the Ingredient-to-edit by it's index.
+    A. Subscribe to the 'startedEditing' Subject in the 'shoppingListService', that is ""emitting"" the index of the Ingredient-to-edit.
+    B. Get the Ingredient-to-edit by it's index.
   */
   ngOnInit(): void {
     this.subscription = this.shoppingListService.startedEditing
@@ -42,7 +42,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   /*
-   Create a new Ingredient based on the two values of the controls of the form in the template, then call the service to add them to the
+    Create a new Ingredient based on the two values of the controls of the form in the template, then call the service to add them to the
    'ingredients' array.
   */
   onSubmit(form: NgForm): void {
@@ -61,7 +61,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     form.reset();
   }
 
-  onClear(form: NgForm): void {
+  onDelete(): void {
+    this.shoppingListService.deleteIngredient(this.editedItemIndex);
+    this.onClear();
+  }
+
+  onClear(): void {
     this.shoppingListForm.reset();
     this.editMode = false;
   }
