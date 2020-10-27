@@ -4,7 +4,7 @@
     A. Using (ngSubmit) on the form, to call 'onAddItem' when a 'submit' type button gets clicked.
     B. 'f' template variable provides access to the JS form-object generated automatically by Angular.
     -->
-    <form (ngSubmit)="onAddItem(f)" #f="ngForm">
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <div class="col-sm-5 form-group">
           <label for="name">Name</label>
@@ -39,7 +39,7 @@
           <button
             class="btn btn-success"
             type="submit"
-            [disabled]="f.invalid">Add
+            [disabled]="f.invalid">{{editMode ? 'Update' : 'Add'}}
           </button>
           <button class="btn btn-danger" type="button">Delete</button>
           <button class="btn btn-primary" type="button">Clear</button>

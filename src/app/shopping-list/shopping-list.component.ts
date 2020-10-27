@@ -8,7 +8,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.scss']
 })
-export class ShoppingListComponent implements OnInit, OnDestroy{
+export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ingredients: Ingredient[];
   private ingredientsChangeSub: Subscription;
@@ -29,6 +29,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void {
     this.ingredientsChangeSub.unsubscribe();
+  }
+
+  // Make 'shoppingListService' ""emit"" the index of the Ingredient-to-edit
+  onEditItem(index: number): void {
+    this.shoppingListService.startedEditing.next(index);
   }
 
 }
