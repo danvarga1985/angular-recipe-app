@@ -6,9 +6,10 @@
 <hr>
 <div class="row">
   <div class="col-xs-12">
-    <!--  A. Show all recipe-items in the recipes[],
-          B. bind the found recipe-item to the 'recipe' property of recipe-item,
-          C. bind the index of the recipe to the 'index' property of recipe-item
+    <!--
+      A. Show all recipe-items in the recipes[],
+      B. bind the found recipe-item to the 'recipe' property of recipe-item,
+      C. bind the index of the recipe to the 'index' property of recipe-item
      -->
     <app-recipe-item
       *ngFor="let recipeEl of recipes; let i = index"

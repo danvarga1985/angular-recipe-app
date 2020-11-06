@@ -14,6 +14,7 @@ import {DropdownDirective} from './shared/dropdown.directive';
 import {AppRoutingModule} from './app-routing.module';
 import {RecipeStartComponent} from './recipes/recipe-start/recipe-start.component';
 import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -33,11 +34,11 @@ import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
   imports: [
     BrowserModule,
     FormsModule,
-    // Needed for the Reactive form-handling in 'recipe-edit'
-    ReactiveFormsModule,
+    ReactiveFormsModule, // Needed for the Reactive form-handling in 'recipe-edit'
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent] // Loads AppComponent at startup
+  bootstrap: [AppComponent] // Load AppComponent at startup
 })
 export class AppModule { }

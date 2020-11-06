@@ -9,6 +9,10 @@ import {Subject} from 'rxjs';
 })
 export class RecipeService {
 
+  private recipes: Recipe[] = [];
+
+  // Fetching the recipes from the server.
+/*
   private recipes: Recipe[] = [
     new Recipe(
       'Plain oatmeal',
@@ -26,6 +30,7 @@ export class RecipeService {
         new Ingredient('Banana', 2)
       ])
   ];
+*/
 
   recipesChanged = new Subject<Recipe[]>();
 
@@ -57,6 +62,11 @@ export class RecipeService {
 
   deleteRecipe(index: number): void {
     this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  setRecipes(recipes: Recipe[]): void {
+    this.recipes = recipes;
     this.recipesChanged.next(this.recipes.slice());
   }
 

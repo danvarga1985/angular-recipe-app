@@ -28,7 +28,7 @@ export class RecipeEditComponent implements OnInit {
     );
   }
 
-  // Fills the form in the HTML in case of editMode is true
+  // Fill the form in the HTML in case of editMode is true
   private initForm(): void {
     let recipeName = '';
     let recipeImagePath = '';
