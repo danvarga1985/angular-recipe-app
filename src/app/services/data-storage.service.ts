@@ -33,11 +33,7 @@ export class DataStorageService {
       take(1),
       exhaustMap(user => {
         // Firebase expects the 'token' as query-parameter.
-        return this.http.get<Recipe[]>('https://angular-recipe-app-backe-3cf79.firebaseio.com/recipes.json',
-          {
-            // Set the queryParams with 'token' - acquired from the previous Observable.
-            params: new HttpParams().set('auth', user.token)
-          });
+        return this.http.get<Recipe[]>('https://angular-recipe-app-backe-3cf79.firebaseio.com/recipes.json');
       }),
       map(recipes => {
         // Array.map function gets called.
