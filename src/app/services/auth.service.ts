@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
+import {User} from '../auth/user.model';
+import {FIREBASE_KEY} from '../server-url';
 
 // Define the model of the response-data. Firebase-specific.
 export interface AuthResponseData {
@@ -10,7 +12,7 @@ export interface AuthResponseData {
   refreshToken: string;
   expiresIn: string;
   localId: string;
-  // 'registered' only needed at login, but not at signup, so it has to be optional.
+  // 'registered' only needed at login, but not at sign up, so it has to be optional.
   registered?: boolean;
 }
 
@@ -18,31 +20,64 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
+  /*
+   BehaviorSubject act the same as a Subject, but they provide the last emitted value, even if the emission happened before the
+   subscription. Because of this, they need a starting value. This makes creating a 'token' variable unnecessary. In this app, the manual
+   'fetch data' action will require the user-token, that has been emitted at authentication - BehaviorSubject will give access to that data.
+  */
+  user = new BehaviorSubject<User>(null);
 
   constructor(private http: HttpClient) {
   }
 
   signUp(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBMYH3gvDz3pQIHz1tvKcBidm6aDR3EkYg',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + FIREBASE_KEY,
       {
         // Follow firebase criteria: https://firebase.google.com/docs/reference/rest/auth/#section-create-email-password
         email,
         password,
         returnSecureToken: true
       }
-    ).pipe(catchError(this.handleError));
+    ).pipe(catchError(this.handleError),
+      tap(responseData => {
+        this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+      })
+    );
   }
 
   login(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBMYH3gvDz3pQIHz1tvKcBidm6aDR3EkYg',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + FIREBASE_KEY,
       {
         email,
         password,
         returnSecureToken: true
       }
-    ).pipe(catchError(this.handleError));
+    ).pipe(catchError(this.handleError),
+      tap(responseData => {
+        this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+      })
+    );
+  }
+
+  private handleAuthentication(email: string, id: string, token: string, expiresIn: number): void {
+    /*
+     'expirationDate' = Get current date (getTime): timestamp in milliseconds -> add 'expiresIn' in milliseconds
+     ('expiresIn' is in seconds originally).
+    */
+    const expirationDate = new Date(
+      new Date().getTime() + expiresIn * 1000
+    );
+
+    const user = new User(
+      email,
+      id,
+      token,
+      expirationDate);
+
+    this.user.next(user);
+
   }
 
   private handleError(errorResponse: HttpErrorResponse): Observable<never> {

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthResponseData, AuthService} from '../services/auth.service';
 import {Observable} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +16,7 @@ export class AuthComponent implements OnInit {
   // Error property can be more complex, but now only the message is relevant, hence it is a string.
   error: string = null;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -48,6 +49,8 @@ export class AuthComponent implements OnInit {
     authObservable.subscribe(responseData => {
       console.log(responseData);
       this.isLoading = false;
+      // Once the user logged in or signep ud, they're redirected to the recipe page.
+      this.router.navigate(['/recipes']);
     }, errorMessage => {
       console.log(errorMessage);
       this.error = errorMessage;
