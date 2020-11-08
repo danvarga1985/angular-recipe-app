@@ -7,12 +7,13 @@ import {RecipeDetailComponent} from './recipes/recipe-detail/recipe-detail.compo
 import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
 import {RecipesResolverService} from './services/recipes-resolver.service';
 import {AuthComponent} from './auth/auth.component';
+import {AuthGuard} from './auth/auth.guard';
 
 const appRoutes: Routes = [
   // The empty path ('') is part of '/recipes', so pathMatch has to be full. The default value is 'prefix'.
   {path: '', redirectTo: '/recipes', pathMatch: 'full'},
   {
-    path: 'recipes', component: RecipesComponent, children: [
+    path: 'recipes', component: RecipesComponent, canActivate: [AuthGuard], children: [
       {path: '', component: RecipeStartComponent},
       // 'new' has to come before the dynamic parameter 'id', otherwise 'new' would also be considered a dynamic parameter.
       {path: 'new', component: RecipeEditComponent},
