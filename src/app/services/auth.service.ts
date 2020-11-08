@@ -27,6 +27,7 @@ export class AuthService {
    'fetch data' action will require the user-token, that has been emitted at authentication - BehaviorSubject will give access to that data.
   */
   user = new BehaviorSubject<User>(null);
+  private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -62,9 +63,52 @@ export class AuthService {
     );
   }
 
+  autoLogin(): void {
+    // Parse the string data from local storage to an object-literal.
+    const userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData'));
+
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+
+    // If there's valid data in the local storage, set the active user based on that data -> user is already logged in.
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+
+      // Get the difference between the current time and 'tokenExpirationDate' in milliseconds.
+      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration);
+    }
+  }
+
   logout(): void {
     this.user.next(null);
+    localStorage.removeItem('userData');
+
+    // Reset the token expiration countdown.
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+
     this.router.navigate(['/auth']);
+  }
+
+  autoLogout(expirationDuration: number): void {
+    /*
+     A. After 'expirationDuration' has passed, 'logout()' gets called.
+     B. Start token-expiration countdown, by setting 'tokenExpirationTimer'.
+    */
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   private handleAuthentication(email: string, id: string, token: string, expiresIn: number): void {
@@ -83,6 +127,13 @@ export class AuthService {
       expirationDate);
 
     this.user.next(user);
+    this.autoLogout(expiresIn * 1000);
+
+    /*
+     Save the user-data to the browser's local storage, so that it can be accessed even after page reload, or browser restart. This way
+     there's no need for the user to re-authenticate in those situations. Another way to achieve this would be through cookies.
+    */
+    localStorage.setItem('userData', JSON.stringify(user));
 
   }
 
