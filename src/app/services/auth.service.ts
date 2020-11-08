@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {User} from '../auth/user.model';
 import {FIREBASE_KEY} from '../server-url';
+import {Router} from '@angular/router';
 
 // Define the model of the response-data. Firebase-specific.
 export interface AuthResponseData {
@@ -27,7 +28,7 @@ export class AuthService {
   */
   user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   signUp(email: string, password: string): Observable<AuthResponseData> {
@@ -59,6 +60,11 @@ export class AuthService {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
       })
     );
+  }
+
+  logout(): void {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
   }
 
   private handleAuthentication(email: string, id: string, token: string, expiresIn: number): void {
