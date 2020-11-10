@@ -1,50 +1,39 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
-import {RecipesComponent} from './recipes/recipes.component';
-import {RecipeListComponent} from './recipes/recipe-list/recipe-list.component';
-import {RecipeDetailComponent} from './recipes/recipe-detail/recipe-detail.component';
-import {RecipeItemComponent} from './recipes/recipe-list/recipe-item/recipe-item.component';
-import {ShoppingListComponent} from './shopping-list/shopping-list.component';
-import {ShoppingEditComponent} from './shopping-list/shopping-edit/shopping-edit.component';
-import {DropdownDirective} from './shared/dropdown.directive';
 import {AppRoutingModule} from './app-routing.module';
-import {RecipeStartComponent} from './recipes/recipe-start/recipe-start.component';
-import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import { AuthComponent } from './auth/auth.component';
-import {LoadingSpinnerComponent} from './shared/loading-spinner/loading-spinner.component';
 import {AuthInterceptorService} from './services/auth-interceptor.service';
-import { AlertComponent } from './shared/alert/alert.component';
+import {ShoppingListModule} from './shopping-list/shopping-list.module';
+import {SharedModule} from './shared/shared.module';
 
 
 @NgModule({
+  /*
+   Declarations is an array of all the components, directives and custom-pipes used by the application. Declarations, unlike imports and
+   exports, can happen only in one place.
+  */
   declarations: [
     AppComponent,
-    HeaderComponent,
-    RecipesComponent,
-    RecipeListComponent,
-    RecipeDetailComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent,
-    RecipeItemComponent,
-    DropdownDirective,
-    RecipeStartComponent,
-    RecipeEditComponent,
-    AuthComponent,
-    LoadingSpinnerComponent,
-    AlertComponent
+    HeaderComponent
   ],
+  // Import is an array of other modules, imported into 'app.module'.
   imports: [
+    /*
+     'BrowserModule' is only needed in the app.module - must only be used once! Shouldn't be imported by other modules, those should import
+     'CommonModule' instead.
+    */
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule, // Needed for the Reactive form-handling in 'recipe-edit'
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ShoppingListModule,
+    SharedModule
   ],
+  /*
+   Any service used in the app needs to be provided (most of this handled by annotations on the classes). These are needed to be provided
+   only once, even when there are multiple modules.
+  */
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}], // Add Interceptor
   bootstrap: [AppComponent] // Load AppComponent at startup
 })
