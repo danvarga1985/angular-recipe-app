@@ -8,8 +8,7 @@ import {AuthInterceptorService} from './services/auth-interceptor.service';
 import {ShoppingListModule} from './shopping-list/shopping-list.module';
 import {SharedModule} from './shared/shared.module';
 import {StoreModule} from '@ngrx/store';
-import {shoppingListReducer} from './shopping-list/store/shopping-list.reducer';
-
+import * as fromApp from './store/app.reducer';
 
 @NgModule({
   /*
@@ -30,7 +29,7 @@ import {shoppingListReducer} from './shopping-list/store/shopping-list.reducer';
     HttpClientModule,
     AppRoutingModule,
     ShoppingListModule,
-    StoreModule.forRoot({shoppingList: shoppingListReducer}),
+    StoreModule.forRoot(fromApp.appReducer), // Import the global store, that contains all the reducers in the application.
     SharedModule
   ],
   /*
