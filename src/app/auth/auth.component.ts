@@ -2,7 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthResponseData, AuthService} from '../services/auth.service';
 import {Observable} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from './store/auth.actions';
 
 @Component({
   selector: 'app-auth',
@@ -10,16 +13,20 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-
+  // 'isLoginMode' is also part of the State, but it doesn't effect any other part of the application, therefore it isn't part of the Store.
   isLoginMode = true;
   isLoading = false;
-  // Error property can be more complex, but now only the message is relevant, hence it is a string.
+  // Error property can be more complex, but now only the message is relevant, hence it is just a string.
   error: string = null;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) {
   }
 
   ngOnInit(): void {
+    this.store.select('auth').subscribe(authState => {
+      this.isLoading = authState.loading;
+      this.error = authState.authError;
+    });
   }
 
   onSwitchMode(): void {
@@ -41,21 +48,22 @@ export class AuthComponent implements OnInit {
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      authObservable = this.authService.login(email, password);
+      this.store.dispatch(new AuthActions.LoginStart({email, password}));
     } else {
       authObservable = this.authService.signUp(email, password);
     }
 
-    authObservable.subscribe(responseData => {
-      console.log(responseData);
-      this.isLoading = false;
-      // Once the user logged in or signep ud, they're redirected to the recipe page.
-      this.router.navigate(['/recipes']);
-    }, errorMessage => {
-      console.log(errorMessage);
-      this.error = errorMessage;
-      this.isLoading = false;
-    });
+
+    // authObservable.subscribe(responseData => {
+    //   console.log(responseData);
+    //   this.isLoading = false;
+    //   // Once the user logged in or signed up, they're redirected to the recipe page.
+    //   this.router.navigate(['/recipes']);
+    // }, errorMessage => {
+    //   console.log(errorMessage);
+    //   this.error = errorMessage;
+    //   this.isLoading = false;
+    // });
 
     form.reset();
   }

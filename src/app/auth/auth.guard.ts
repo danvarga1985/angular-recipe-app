@@ -3,20 +3,25 @@ import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {map, take} from 'rxjs/operators';
+import * as fromApp from '../store/app.reducer';
+import {Store} from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) {
   }
 
   // If there is an authenticated user, return true, otherwise redirect to '/auth'.
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> |
     boolean | UrlTree {
-    return this.authService.user.pipe(
+    return this.store.select('auth').pipe(
       // Make sure to take the latest value, then unsubscribe. No need for the guard after the initial check.
       take(1),
+      map(authState => {
+        return authState.user;
+      }),
       map(user => {
         const isAuth = !!user;
 

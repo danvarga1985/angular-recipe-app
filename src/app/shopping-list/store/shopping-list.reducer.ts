@@ -21,8 +21,7 @@ const initialState: State = {
  B. Setting default value for the 'state' parameter in the signature.
  C. State parameter gets overwritten while the Application is running.
 */
-export function shoppingListReducer(state: State = initialState,
-                                    action: ShoppingListActions.ShoppingListActions): State {
+export function shoppingListReducer(state: State = initialState, action: ShoppingListActions.ShoppingListActions): State {
   switch (action.type) {
     case ShoppingListActions.ADD_INGREDIENT:
       return {
@@ -75,6 +74,12 @@ export function shoppingListReducer(state: State = initialState,
         editedIngredient: null,
         editedIngredientIndex: -1
       };
+    /*
+     A. Upon initialization of the store, an initial Action is being sent to all reducers, that has no identifier handled by any of the
+     cases, therefore the default case will resolve.
+     B. Every manually-dispatched Action will also reach all reducers - in those cases, the default state gets returned by the non-relevant
+     reducers.
+    */
     default:
       return state;
   }

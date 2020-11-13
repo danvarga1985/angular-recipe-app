@@ -9,6 +9,8 @@ import {ShoppingListModule} from './shopping-list/shopping-list.module';
 import {SharedModule} from './shared/shared.module';
 import {StoreModule} from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from './auth/store/auth.effects';
 
 @NgModule({
   /*
@@ -30,6 +32,7 @@ import * as fromApp from './store/app.reducer';
     AppRoutingModule,
     ShoppingListModule,
     StoreModule.forRoot(fromApp.appReducer), // Import the global store, that contains all the reducers in the application.
+    EffectsModule.forRoot([AuthEffects]),
     SharedModule
   ],
   /*

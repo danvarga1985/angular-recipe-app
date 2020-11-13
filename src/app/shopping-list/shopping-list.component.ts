@@ -11,6 +11,7 @@ import * as ShoppingListActions from '../shopping-list/store/shopping-list.actio
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit {
+  // The store will provide an Observable.
   ingredients: Observable<{ ingredients: Ingredient[] }>;
 
   constructor(private store: Store<fromApp.AppState>) {
@@ -23,7 +24,6 @@ export class ShoppingListComponent implements OnInit {
 
   // Make 'shoppingListService' ""emit"" the index of the Ingredient-to-edit
   onEditItem(index: number): void {
-    // this.shoppingListService.startedEditing.next(index);
     this.store.dispatch(new ShoppingListActions.StartEdit(index));
   }
 

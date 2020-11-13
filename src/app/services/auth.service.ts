@@ -5,6 +5,10 @@ import {catchError, tap} from 'rxjs/operators';
 import {User} from '../auth/user.model';
 import {FIREBASE_KEY} from '../server-url';
 import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from '../auth/store/auth.actions';
+
 
 // Define the model of the response-data. Firebase-specific.
 export interface AuthResponseData {
@@ -29,7 +33,7 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private store: Store<fromApp.AppState>) {
   }
 
   signUp(email: string, password: string): Observable<AuthResponseData> {
@@ -80,7 +84,14 @@ export class AuthService {
 
     // If there's valid data in the local storage, set the active user based on that data -> user is already logged in.
     if (loadedUser.token) {
-      this.user.next(loadedUser);
+      this.store.dispatch(
+        new AuthActions.Login(
+          {
+            email: loadedUser.email,
+            userId: loadedUser.id,
+            token: loadedUser.token,
+            expirationDate: new Date(userData._tokenExpirationDate)
+          }));
 
       // Get the difference between the current time and 'tokenExpirationDate' in milliseconds.
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
@@ -89,7 +100,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.user.next(null);
+    this.store.dispatch(new AuthActions.Logout());
     localStorage.removeItem('userData');
 
     // Reset the token expiration countdown.
@@ -111,7 +122,7 @@ export class AuthService {
     }, expirationDuration);
   }
 
-  private handleAuthentication(email: string, id: string, token: string, expiresIn: number): void {
+  private handleAuthentication(email: string, userId: string, token: string, expiresIn: number): void {
     /*
      'expirationDate' = Get current date (getTime): timestamp in milliseconds -> add 'expiresIn' in milliseconds
      ('expiresIn' is in seconds originally).
@@ -119,14 +130,16 @@ export class AuthService {
     const expirationDate = new Date(
       new Date().getTime() + expiresIn * 1000
     );
+    const user = new User(email, userId, token, expirationDate);
 
-    const user = new User(
-      email,
-      id,
-      token,
-      expirationDate);
-
-    this.user.next(user);
+    this.store.dispatch(new AuthActions.Login(
+      {
+        email,
+        userId,
+        token,
+        expirationDate
+      }
+    ));
     this.autoLogout(expiresIn * 1000);
 
     /*
