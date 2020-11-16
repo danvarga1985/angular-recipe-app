@@ -1,7 +1,6 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {AuthService} from '../services/auth.service';
 import {map, take} from 'rxjs/operators';
 import * as fromApp from '../store/app.reducer';
 import {Store} from '@ngrx/store';
@@ -10,7 +9,7 @@ import {Store} from '@ngrx/store';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) {
+  constructor(private router: Router, private store: Store<fromApp.AppState>) {
   }
 
   // If there is an authenticated user, return true, otherwise redirect to '/auth'.

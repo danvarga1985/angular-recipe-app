@@ -17,7 +17,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   editMode = false;
-  editedItem: Ingredient;
+  editedItem: Ingredient = null;
 
   constructor(private store: Store<fromApp.AppState>) {
   }
@@ -31,8 +31,6 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
           name: this.editedItem.name,
           amount: this.editedItem.amount
         });
-      } else {
-        this.editMode = false;
       }
     });
   }
