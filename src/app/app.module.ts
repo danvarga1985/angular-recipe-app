@@ -11,6 +11,9 @@ import {StoreModule} from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './auth/store/auth.effects';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
 
 @NgModule({
   /*
@@ -33,7 +36,10 @@ import {AuthEffects} from './auth/store/auth.effects';
     ShoppingListModule,
     StoreModule.forRoot(fromApp.appReducer), // Import the global store, that contains all the reducers in the application.
     EffectsModule.forRoot([AuthEffects]),
-    SharedModule
+    SharedModule,
+    // Used together with the browser-extension.
+    StoreDevtoolsModule.instrument({logOnly: environment.production}),
+    StoreRouterConnectingModule.forRoot()
   ],
   /*
    Any service used in the app needs to be provided (most of this handled by annotations on the classes). These are needed to be provided
