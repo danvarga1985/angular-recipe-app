@@ -14,6 +14,7 @@ import {AuthEffects} from './auth/store/auth.effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {RecipeEffects} from './recipes/store/recipe.effects';
 
 @NgModule({
   /*
@@ -35,7 +36,7 @@ import {StoreRouterConnectingModule} from '@ngrx/router-store';
     AppRoutingModule,
     ShoppingListModule,
     StoreModule.forRoot(fromApp.appReducer), // Import the global store, that contains all the reducers in the application.
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
     SharedModule,
     // Used together with the browser-extension.
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
